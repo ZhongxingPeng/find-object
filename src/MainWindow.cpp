@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ui_mainWindow.h"
 #include "KeypointItem.h"
 #include "RectItem.h"
-#include "ParametersToolBox.h"
+//#include "ParametersToolBox.h"
 #include "AboutDialog.h"
 #include "rtabmap/PdfPlot.h"
 #include "Vocabulary.h"

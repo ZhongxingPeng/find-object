@@ -53,7 +53,7 @@ namespace find_object {
 
 class ObjWidget;
 class Camera;
-class ParametersToolBox;
+//class ParametersToolBox;
 class AboutDialog;
 class TcpServer;
 class KeypointDetector;

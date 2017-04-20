@@ -48,7 +48,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 class CameraROS : public find_object::Camera {
 	Q_OBJECT
 public:
-	CameraROS(bool subscribeDepth, QObject * parent = 0);
+	CameraROS(QObject * parent = 0);
 	virtual ~CameraROS() {}
 
 	virtual bool start();
@@ -67,13 +67,8 @@ private Q_SLOTS:
 
 private:
 	void imgReceivedCallback(const sensor_msgs::ImageConstPtr & msg);
-	void imgDepthReceivedCallback(
-			const sensor_msgs::ImageConstPtr& rgbMsg,
-			const sensor_msgs::ImageConstPtr& depthMsg,
-			const sensor_msgs::CameraInfoConstPtr& cameraInfoMsg);
 
 private:
-	bool subscribeDepth_;
 	image_transport::Subscriber imageSub_;
 
 	image_transport::SubscriberFilter rgbSub_;

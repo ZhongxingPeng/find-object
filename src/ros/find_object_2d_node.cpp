@@ -31,7 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QApplication>
 #include <QDir>
 #include "find_object/MainWindow.h"
-#include "ParametersToolBox.h"
+//#include "ParametersToolBox.h"
 #include "find_object/Settings.h"
 #include <signal.h>
 
@@ -136,13 +136,15 @@ int main(int argc, char** argv)
 		}
 	}
 
-	CameraROS * camera = new CameraROS(subscribeDepth);
+	CameraROS * camera = new CameraROS();
 
+/*
 	QObject::connect(
 			camera,
 			SIGNAL(rosDataReceived(const std::string &, const ros::Time &, const cv::Mat &, float)),
 			findObjectROS,
 			SLOT(setDepthData(const std::string &, const ros::Time &, const cv::Mat &, float)));
+*/
 
 	// Catch ctrl-c to close the gui
 	setupQuitSignal(gui);
