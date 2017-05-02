@@ -7,27 +7,27 @@ SET(headers_ui
    ../include/${PROJECT_PREFIX}/Camera.h
    ../include/${PROJECT_PREFIX}/TcpServer.h
    ../include/${PROJECT_PREFIX}/ObjWidget.h
-   ./AddObjectDialog.h
+#   ./AddObjectDialog.h
    ./CameraTcpServer.h
    ./ParametersToolBox.h
-   ./AboutDialog.h
+#   ./AboutDialog.h
    ./RectItem.h
    ./ImageDropWidget.h
-   ./rtabmap/PdfPlot.h
+#   ./rtabmap/PdfPlot.h
    ./utilite/UPlot.h
 )
 IF(CATKIN_BUILD)
    SET(headers_ui  
       ${headers_ui}
       ./ros/CameraROS.h
-      ./ros/FindObjectROS.h
+#      ./ros/FindObjectROS.h
    )
 ENDIF(CATKIN_BUILD)
 
 SET(uis
    ./ui/mainWindow.ui
-   ./ui/addObjectDialog.ui
-   ./ui/aboutDialog.ui
+#   ./ui/addObjectDialog.ui
+#   ./ui/aboutDialog.ui
 )
 
 SET(qrc 
@@ -52,8 +52,8 @@ ENDIF()
 
 SET(SRC_FILES 
    ./MainWindow.cpp
-   ./AddObjectDialog.cpp
-   ./KeypointItem.cpp
+#   ./AddObjectDialog.cpp
+#   ./KeypointItem.cpp
    ./RectItem.cpp
    ./QtOpenCV.cpp
    ./Camera.cpp
@@ -63,7 +63,7 @@ SET(SRC_FILES
    ./ObjWidget.cpp
    ./ImageDropWidget.cpp
    ./FindObject.cpp
-   ./AboutDialog.cpp
+#   ./AboutDialog.cpp
    ./TcpServer.cpp
    ./Vocabulary.cpp
    ./JsonWriter.cpp
@@ -72,7 +72,7 @@ SET(SRC_FILES
    ./utilite/UDirectory.cpp
    ./utilite/UFile.cpp
    ./utilite/UConversion.cpp
-   ./rtabmap/PdfPlot.cpp
+#   ./rtabmap/PdfPlot.cpp
    ./json/jsoncpp.cpp
    ${moc_srcs} 
    ${moc_uis} 
@@ -82,7 +82,7 @@ IF(CATKIN_BUILD)
    SET(SRC_FILES 
       ${SRC_FILES}
       ./ros/CameraROS.cpp
-      ./ros/FindObjectROS.cpp
+#      ./ros/FindObjectROS.cpp
    )
 ENDIF(CATKIN_BUILD)
 
@@ -142,26 +142,26 @@ ELSE()
    add_executable(find_object_2d ros/find_object_2d_node.cpp)
    target_link_libraries(find_object_2d find_object ${LIBRARIES})
 
-   add_executable(print_objects_detected ros/print_objects_detected_node.cpp)
-   target_link_libraries(print_objects_detected ${LIBRARIES})
-   add_dependencies(print_objects_detected ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#   add_executable(print_objects_detected ros/print_objects_detected_node.cpp)
+#   target_link_libraries(print_objects_detected ${LIBRARIES})
+#   add_dependencies(print_objects_detected ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
-   add_executable(tf_example ros/tf_example_node.cpp)
-   target_link_libraries(tf_example ${LIBRARIES})
-   add_dependencies(tf_example ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#   add_executable(tf_example ros/tf_example_node.cpp)
+#   target_link_libraries(tf_example ${LIBRARIES})
+#   add_dependencies(tf_example ${${PROJECT_NAME}_EXPORTED_TARGETS})
    
    IF(Qt5_FOUND)
       QT5_USE_MODULES(find_object_2d Widgets Core Gui Network PrintSupport)
-      QT5_USE_MODULES(print_objects_detected Widgets Core Gui Network PrintSupport)
-      QT5_USE_MODULES(tf_example Widgets Core Gui Network PrintSupport)
+#      QT5_USE_MODULES(print_objects_detected Widgets Core Gui Network PrintSupport)
+#      QT5_USE_MODULES(tf_example Widgets Core Gui Network PrintSupport)
    ENDIF(Qt5_FOUND)
 
    ## Mark executables and/or libraries for installation
    install(TARGETS 
       find_object
       find_object_2d 
-      print_objects_detected 
-      tf_example 
+#      print_objects_detected 
+#      tf_example 
       ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
       LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
       RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

@@ -272,6 +272,8 @@
    <addaction name="menuView"/>
    <addaction name="menu"/>
   </widget>
+
+<!--  
   <widget class="QDockWidget" name="dockWidget_parameters">
    <property name="minimumSize">
     <size>
@@ -327,6 +329,9 @@
     </layout>
    </widget>
   </widget>
+-->
+
+<!--
   <widget class="QDockWidget" name="dockWidget_objects">
    <property name="minimumSize">
     <size>
@@ -440,6 +445,9 @@
     </layout>
    </widget>
   </widget>
+-->
+
+<!--
   <widget class="QDockWidget" name="dockWidget_plot">
    <property name="windowTitle">
     <string>Likelihood</string>
@@ -461,6 +469,9 @@
     </layout>
    </widget>
   </widget>
+-->
+
+<!--
   <widget class="QDockWidget" name="dockWidget_statistics">
    <property name="windowTitle">
     <string>Statistics</string>
@@ -783,6 +794,8 @@
     </layout>
    </widget>
   </widget>
+-->
+
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>

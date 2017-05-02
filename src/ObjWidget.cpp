@@ -25,12 +25,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "find_object/Settings.h"
-#include "find_object/utilite/ULogger.h"
+//#include "find_object/Settings.h"
+//#include "find_object/utilite/ULogger.h"
 #include "find_object/ObjWidget.h"
 #include "find_object/QtOpenCV.h"
 
-#include "KeypointItem.h"
+//#include "KeypointItem.h"
 
 #include <opencv2/highgui/highgui.hpp>
 
@@ -55,15 +55,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace find_object {
 
 ObjWidget::ObjWidget(QWidget * parent) :
-	QWidget(parent),
-	id_(0),
-	graphicsView_(0),
-	graphicsViewInitialized_(false),
-	alpha_(100),
-	color_(Qt::red)
+	QWidget(parent)
+//	id_(0),
+//	graphicsView_(0),
+//	graphicsViewInitialized_(false),
+//	alpha_(100),
+//	color_(Qt::red)
 {
 	setupUi();
 }
+
+/*
 ObjWidget::ObjWidget(int id, const std::vector<cv::KeyPoint> & keypoints, const QMultiMap<int,int> & words, const QImage & image, QWidget * parent) :
 	QWidget(parent),
 	id_(id),
@@ -74,11 +76,23 @@ ObjWidget::ObjWidget(int id, const std::vector<cv::KeyPoint> & keypoints, const 
 {
 	setupUi();
 	this->updateImage(image);
-	this->updateData(keypoints, words);
+//	this->updateData(keypoints, words);
 }
+*/
+
 ObjWidget::~ObjWidget()
 {
 }
+
+void ObjWidget::updateImage(const QImage & image)
+{
+	pixmap_ = QPixmap::fromImage(image);
+	rect_ = pixmap_.rect();
+	label_->setVisible(image.isNull());
+
+    this->update();
+}
+
 
 void ObjWidget::setupUi()
 {
@@ -91,7 +105,7 @@ void ObjWidget::setupUi()
 	label_->setAlignment(Qt::AlignCenter);
 	label_->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-	this->setLayout(new QVBoxLayout(this));
+    this->setLayout(new QVBoxLayout(this));
 	this->layout()->addWidget(graphicsView_);
 	this->layout()->addWidget(label_);
 	this->layout()->setContentsMargins(0,0,0,0);
@@ -100,7 +114,7 @@ void ObjWidget::setupUi()
 	showImage_ = menu_->addAction(tr("Show image"));
 	showImage_->setCheckable(true);
 	showImage_->setChecked(true);
-	showFeatures_ = menu_->addAction(tr("Show features"));
+    showFeatures_ = menu_->addAction(tr("Show features"));
 	showFeatures_->setCheckable(true);
 	showFeatures_->setChecked(true);
 	mirrorView_ = menu_->addAction(tr("Mirror view"));
@@ -125,14 +139,16 @@ void ObjWidget::setupUi()
 	delete_ = menu_->addAction(tr("Delete"));
 	delete_->setEnabled(false);
 
-	this->setId(id_);
+//	this->setId(id_);
 
 	graphicsView_->setRubberBandSelectionMode(Qt::ContainsItemShape);
 	graphicsView_->setDragMode(QGraphicsView::RubberBandDrag);
 
-	connect(graphicsView_->scene(), SIGNAL(selectionChanged()), this, SIGNAL(selectionChanged()));
+//	connect(graphicsView_->scene(), SIGNAL(selectionChanged()), this, SIGNAL(selectionChanged()));
 }
 
+
+/*
 void ObjWidget::setId(int id)
 {
 	color_ = QColor((Qt::GlobalColor)((id % 10 + 7)==Qt::yellow?Qt::darkYellow:(id % 10 + 7)));
@@ -142,7 +158,11 @@ void ObjWidget::setId(int id)
 		savedFileName_ = QString("object_%1.png").arg(id_);
 	}
 }
+*/
 
+
+
+/*
 void ObjWidget::setGraphicsViewMode(bool on)
 {
 	graphicsViewMode_->setChecked(on);
@@ -175,7 +195,10 @@ void ObjWidget::setGraphicsViewMode(bool on)
 		graphicsView_->setTransform(QTransform().scale(this->isMirrorView()?-1.0:1.0, 1.0));
 	}
 }
+*/
 
+
+/*
 void ObjWidget::setAutoScale(bool autoScale)
 {
 	autoScale_->setChecked(autoScale);
@@ -192,7 +215,9 @@ void ObjWidget::setAutoScale(bool autoScale)
 		}
 	}
 }
+*/
 
+/*
 void ObjWidget::setSizedFeatures(bool on)
 {
 	sizedFeatures_->setChecked(on);
@@ -258,25 +283,28 @@ void ObjWidget::setAlpha(int alpha)
 		}
 	}
 }
+*/
 
+
+/*
 void ObjWidget::setTextLabel(const QString & text)
 {
 	label_->setText(text);
 }
+*/
 
-void ObjWidget::updateImage(const QImage & image)
-{
-	pixmap_ = QPixmap::fromImage(image);
-	rect_ = pixmap_.rect();
-	label_->setVisible(image.isNull());
-}
+
+
+
+
+/*
 void ObjWidget::updateData(const std::vector<cv::KeyPoint> & keypoints, const QMultiMap<int, int> & words)
 {
 	keypoints_ = keypoints;
 	kptColors_ = QVector<QColor>((int)keypoints.size(), defaultColor(0));
 	keypointItems_.clear();
 	rectItems_.clear();
-	this->updateWords(words);
+//	this->updateWords(words);
 	graphicsView_->scene()->clear();
 	graphicsViewInitialized_ = false;
 	mouseCurrentPos_ = mousePressedPos_; // this will reset roi selection
@@ -285,14 +313,16 @@ void ObjWidget::updateData(const std::vector<cv::KeyPoint> & keypoints, const QM
 
 	if(graphicsViewMode_->isChecked())
 	{
-		this->setupGraphicsView();
+//		this->setupGraphicsView();
 	}
 	else
 	{
 		this->update();
 	}
 }
+*/
 
+/*
 void ObjWidget::updateWords(const QMultiMap<int,int> & words)
 {
 	words_.clear();
@@ -310,7 +340,11 @@ void ObjWidget::updateWords(const QMultiMap<int,int> & words)
 		}
 	}
 }
+*/
 
+
+
+/*
 void ObjWidget::resetKptsColor()
 {
 	for(int i=0; i<kptColors_.size(); ++i)
@@ -337,7 +371,9 @@ void ObjWidget::resetKptsWordID()
 		keypointItems_[i]->setWordID(-1);
 	}
 }
+*/
 
+/*
 void ObjWidget::setKptColor(int index, const QColor & color)
 {
 	if(index < kptColors_.size())
@@ -368,7 +404,9 @@ void ObjWidget::setKptWordID(int index, int wordID)
 		keypointItems_.at(index)->setWordID(wordID);
 	}
 }
+*/
 
+/*
 void ObjWidget::addRect(QGraphicsRectItem * rect)
 {
 	if(graphicsViewInitialized_)
@@ -383,16 +421,21 @@ void ObjWidget::addRect(QGraphicsRectItem * rect)
 	rect->setPen(pen);
 	rectItems_.append(rect);
 }
+*/
 
+/*
 QList<QGraphicsItem*> ObjWidget::selectedItems() const
 {
 	return graphicsView_->scene()->selectedItems();
 }
+*/
 
+/*
 bool ObjWidget::isImageShown() const
 {
 	return showImage_->isChecked();
 }
+
 
 bool ObjWidget::isFeaturesShown() const
 {
@@ -408,7 +451,9 @@ bool ObjWidget::isMirrorView() const
 {
 	return mirrorView_->isChecked();
 }
+*/
 
+/*
 void ObjWidget::setDeletable(bool deletable)
 {
 	delete_->setEnabled(deletable);
@@ -439,6 +484,7 @@ void ObjWidget::setFeaturesShown(bool shown)
 		this->update();
 	}
 }
+*/
 
 void ObjWidget::computeScaleOffsets(float & scale, float & offsetX, float & offsetY)
 {
@@ -490,6 +536,7 @@ void ObjWidget::paintEvent(QPaintEvent *event)
 	{
 		if(!rect_.isNull())
 		{
+
 			//Scale
 			float ratio, offsetX, offsetY;
 			this->computeScaleOffsets(ratio, offsetX, offsetY);
@@ -511,11 +558,14 @@ void ObjWidget::paintEvent(QPaintEvent *event)
 				painter.drawPixmap(QPoint(0,0), pixmap_);
 			}
 
+/*
 			if(showFeatures_->isChecked())
 			{
 				drawKeypoints(&painter);
 			}
+*/
 
+/*
 			for(int i=0; i<rectItems_.size(); ++i)
 			{
 				painter.save();
@@ -524,7 +574,9 @@ void ObjWidget::paintEvent(QPaintEvent *event)
 				painter.drawRect(rectItems_.at(i)->rect());
 				painter.restore();
 			}
+*/
 
+/*
 			if(mouseCurrentPos_ != mousePressedPos_)
 			{
 				painter.save();
@@ -547,10 +599,13 @@ void ObjWidget::paintEvent(QPaintEvent *event)
 				painter.drawRect(0, bottom, rect_.width(), rect_.height()-bottom);
 				painter.restore();
 			}
+*/
+
 		}
 	}
 }
 
+/*
 void ObjWidget::resizeEvent(QResizeEvent* event)
 {
 	QWidget::resizeEvent(event);
@@ -695,7 +750,10 @@ void ObjWidget::contextMenuEvent(QContextMenuEvent * event)
 		}
 	}
 }
+*/
 
+
+/*
 QPixmap ObjWidget::getSceneAsPixmap()
 {
 	if(graphicsViewMode_->isChecked())
@@ -710,7 +768,9 @@ QPixmap ObjWidget::getSceneAsPixmap()
 		return QPixmap::grabWidget(this);
 	}
 }
+*/
 
+/*
 void ObjWidget::updateItemsShown()
 {
 	QList<QGraphicsItem*> items = graphicsView_->scene()->items();
@@ -726,7 +786,9 @@ void ObjWidget::updateItemsShown()
 		}
 	}
 }
+*/
 
+/*
 void ObjWidget::drawKeypoints(QPainter * painter)
 {
 	QList<KeypointItem *> items;
@@ -765,14 +827,20 @@ void ObjWidget::drawKeypoints(QPainter * painter)
 		}
 	}
 }
+*/
 
+
+/*
 QColor ObjWidget::defaultColor(int id) const
 {
 	QColor color(id >= 0 ? Qt::yellow : Qt::white);
 	color.setAlpha(alpha_);
 	return color;
 }
+*/
 
+
+/*
 std::vector<cv::KeyPoint> ObjWidget::selectedKeypoints() const
 {
 	std::vector<cv::KeyPoint> selected;
@@ -789,7 +857,9 @@ std::vector<cv::KeyPoint> ObjWidget::selectedKeypoints() const
 	}
 	return selected;
 }
+*/
 
+/*
 void ObjWidget::setupGraphicsView()
 {
 	if(!rect_.isNull())
@@ -802,7 +872,7 @@ void ObjWidget::setupGraphicsView()
 
 		QGraphicsPixmapItem * pixmapItem = graphicsView_->scene()->addPixmap(pixmap_);
 		pixmapItem->setVisible(this->isImageShown());
-		this->drawKeypoints();
+		//this->drawKeypoints();
 
 		for(int i=0; i<rectItems_.size(); ++i)
 		{
@@ -820,6 +890,8 @@ void ObjWidget::setupGraphicsView()
 		graphicsView_->setVisible(false);
 	}
 }
+*/
+
 
 } // namespace find_object
 

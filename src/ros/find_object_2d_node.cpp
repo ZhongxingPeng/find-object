@@ -26,13 +26,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "CameraROS.h"
-#include "FindObjectROS.h"
+//#include "FindObjectROS.h"
 
 #include <QApplication>
 #include <QDir>
 #include "find_object/MainWindow.h"
 //#include "ParametersToolBox.h"
-#include "find_object/Settings.h"
+//#include "find_object/Settings.h"
 #include <signal.h>
 
 using namespace find_object;
@@ -70,13 +70,22 @@ int main(int argc, char** argv)
 	ros::init(argc, argv, "find_object_2d");
 
 	gui = true;
-	std::string objectsPath;
-	std::string sessionPath;
+//	std::string objectsPath;
+//	std::string sessionPath;
 	settingsPath = QDir::homePath().append("/.ros/find_object_2d.ini").toStdString();
 	bool subscribeDepth = false;
 
+
+		QString path = settingsPath.c_str();
+		if(path.contains('~'))
+		{
+			path.replace('~', QDir::homePath());
+			settingsPath = path.toStdString();
+		}
+
 	ros::NodeHandle nh("~");
 
+/*
 	nh.param("gui", gui, gui);
 	nh.param("objects_path", objectsPath, objectsPath);
 	nh.param("session_path", sessionPath, sessionPath);
@@ -88,7 +97,9 @@ int main(int argc, char** argv)
 	ROS_INFO("session_path=%s", sessionPath.c_str());
 	ROS_INFO("settings_path=%s", settingsPath.c_str());
 	ROS_INFO("subscribe_depth = %s", subscribeDepth?"true":"false");
+*/
 
+/*
 	if(settingsPath.empty())
 	{
 		settingsPath = QDir::homePath().append("/.ros/find_object_2d.ini").toStdString();
@@ -107,11 +118,14 @@ int main(int argc, char** argv)
 			settingsPath = path.toStdString();
 		}
 	}
+*/
 
 	// Load settings, should be loaded before creating other objects
-	Settings::init(settingsPath.c_str());
+//	Settings::init(settingsPath.c_str());
 
-	FindObjectROS * findObjectROS = new FindObjectROS();
+//	FindObjectROS * findObjectROS = new FindObjectROS();
+
+    /*
 	if(!sessionPath.empty())
 	{
 		if(!objectsPath.empty())
@@ -135,6 +149,7 @@ int main(int argc, char** argv)
 			ROS_ERROR("No objects loaded from path \"%s\"", path.toStdString().c_str());
 		}
 	}
+    */
 
 	CameraROS * camera = new CameraROS();
 
@@ -152,14 +167,18 @@ int main(int argc, char** argv)
 	if(gui)
 	{
 		QApplication app(argc, argv);
-		MainWindow mainWindow(findObjectROS, camera); // take ownership
+		//MainWindow mainWindow(findObjectROS, camera); // take ownership
+		MainWindow mainWindow(camera); // take ownership
 
+/*
 		QObject::connect(
 				&mainWindow,
 				SIGNAL(objectsFound(const find_object::DetectionInfo &)),
 				findObjectROS,
 				SLOT(publish(const find_object::DetectionInfo &)));
+*/
 
+/*
 		QStringList topics = camera->subscribedTopics();
 		if(topics.size() == 1)
 		{
@@ -174,14 +193,18 @@ int main(int argc, char** argv)
 					"<qt>Find-Object subscribed to : <br/> <b>%1</b> <br/> <b>%2</b> <br/> <b>%3</b><br/>"
 					"</qt>").arg(topics.at(0)).arg(topics.at(1)).arg(topics.at(2)));
 		}
+*/
+
 		mainWindow.show();
 		app.connect( &app, SIGNAL( lastWindowClosed() ), &app, SLOT( quit() ) );
 
 		// loop
 		mainWindow.startProcessing();
 		app.exec();
-		Settings::saveSettings();
+//		Settings::saveSettings();
 	}
+
+/*
 	else
 	{
 		QCoreApplication app(argc, argv);
@@ -196,5 +219,7 @@ int main(int argc, char** argv)
 		delete camera;
 		delete findObjectROS;
 	}
+*/
+
 	return 0;
 }

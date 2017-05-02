@@ -27,22 +27,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "find_object/MainWindow.h"
 #include "find_object/Camera.h"
-#include "find_object/Settings.h"
-#include "find_object/TcpServer.h"
-#include "find_object/FindObject.h"
+//#include "find_object/Settings.h"
+//#include "find_object/TcpServer.h"
+
+//#include "find_object/FindObject.h"
+//#include "find_object/DetectionInfo.h"
+
 #include "find_object/utilite/ULogger.h"
-#include "find_object/ObjWidget.h"
+//#include "find_object/ObjWidget.h"
 #include "find_object/QtOpenCV.h"
 
-#include "AddObjectDialog.h"
+//#include "AddObjectDialog.h"
 #include "ui_mainWindow.h"
-#include "KeypointItem.h"
-#include "RectItem.h"
+//#include "KeypointItem.h"
+//#include "RectItem.h"
 //#include "ParametersToolBox.h"
-#include "AboutDialog.h"
-#include "rtabmap/PdfPlot.h"
-#include "Vocabulary.h"
-#include "ObjSignature.h"
+//#include "AboutDialog.h"
+//#include "rtabmap/PdfPlot.h"
+//#include "Vocabulary.h"
+//#include "ObjSignature.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -79,23 +82,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace find_object {
 
 // Camera ownership transferred
-MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * parent) :
+//MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * parent) :
+MainWindow::MainWindow(Camera * camera, QWidget * parent) :
 	QMainWindow(parent),
-	camera_(camera),
-	findObject_(findObject),
-	likelihoodCurve_(0),
-	inliersCurve_(0),
-	lowestRefreshRate_(99),
-	objectsModified_(false),
-	tcpServer_(0)
+	camera_(camera)
+//	findObject_(findObject)
+//	likelihoodCurve_(0),
+//	inliersCurve_(0),
+//	lowestRefreshRate_(99),
+//	objectsModified_(false),
+//	tcpServer_(0)
 {
-	UASSERT(findObject_ != 0);
+//	UASSERT(findObject_ != 0);
 
 	ui_ = new Ui_mainWindow();
 	ui_->setupUi(this);
+
+/*
 	aboutDialog_ = new AboutDialog(this);
 	this->setStatusBar(new QStatusBar());
+*/
 
+/*
 	likelihoodCurve_ = new rtabmap::PdfPlotCurve("Likelihood", &imagesMap_, this);
 	inliersCurve_ = new rtabmap::PdfPlotCurve("Inliers", &imagesMap_, this);
 	likelihoodCurve_->setPen(QPen(Qt::blue));
@@ -103,21 +111,28 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 	ui_->likelihoodPlot->addCurve(likelihoodCurve_, false);
 	ui_->likelihoodPlot->addCurve(inliersCurve_, false);
 	ui_->likelihoodPlot->setGraphicsView(true);
+*/
 
+/*
 	ui_->dockWidget_statistics->setVisible(false);
 	ui_->dockWidget_parameters->setVisible(false);
 	ui_->dockWidget_plot->setVisible(false);
 	ui_->widget_controls->setVisible(false);
+*/
 
+/*
 	QByteArray geometry;
 	QByteArray state;
 	Settings::loadWindowSettings(geometry, state);
 	this->restoreGeometry(geometry);
 	this->restoreState(state);
 	lastObjectsUpdateParameters_ = Settings::getParameters();
+*/
 
-	ui_->toolBox->setupUi();
+//	ui_->toolBox->setupUi();
 
+
+/*
 	if(!camera_)
 	{
 		camera_ = new Camera(this);
@@ -125,6 +140,8 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 	else
 	{
 		camera_->setParent(this);
+
+        
 		ui_->toolBox->getParameterWidget(Settings::kCamera_1deviceId())->setEnabled(false);
 		ui_->toolBox->getParameterWidget(Settings::kCamera_2imageWidth())->setEnabled(false);
 		ui_->toolBox->getParameterWidget(Settings::kCamera_3imageHeight())->setEnabled(false);
@@ -136,8 +153,12 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 		ui_->actionCamera_from_TCP_IP->setVisible(false);
 		ui_->actionCamera_from_directory_of_images->setVisible(false);
 		ui_->actionLoad_scene_from_file->setVisible(false);
+        
 	}
+*/
 
+
+/*
 #if CV_MAJOR_VERSION < 3
 	if(cv::gpu::getCudaEnabledDeviceCount() == 0)
 #else
@@ -180,7 +201,10 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 				SIGNAL(stateChanged(int)),
 				this,
 				SLOT(showHideControls()));
+*/
 
+
+/*
 	//buttons
 	connect(ui_->pushButton_restoreDefaults, SIGNAL(clicked()), ui_->toolBox, SLOT(resetCurrentPage()));
 	connect(ui_->pushButton_updateObjects, SIGNAL(clicked()), this, SLOT(updateObjects()));
@@ -190,7 +214,9 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 	ui_->actionPause_camera->setEnabled(false);
 	ui_->actionSave_objects->setEnabled(false);
 	ui_->actionSave_session->setEnabled(false);
+*/
 
+/*
 	// Actions
 	connect(ui_->actionAdd_object_from_scene, SIGNAL(triggered()), this, SLOT(addObjectFromScene()));
 	connect(ui_->actionAdd_objects_from_files, SIGNAL(triggered()), this, SLOT(addObjectsFromFiles()));
@@ -215,7 +241,10 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 	connect(ui_->actionLoad_vocabulary, SIGNAL(triggered()), this, SLOT(loadVocabulary()));
 	connect(ui_->actionShow_objects_features, SIGNAL(triggered()), this, SLOT(showObjectsFeatures()));
 	connect(ui_->actionHide_objects_features, SIGNAL(triggered()), this, SLOT(hideObjectsFeatures()));
+*/
 
+
+/*
 	connect(ui_->pushButton_play, SIGNAL(clicked()), this, SLOT(startProcessing()));
 	connect(ui_->pushButton_stop, SIGNAL(clicked()), this, SLOT(stopProcessing()));
 	connect(ui_->pushButton_pause, SIGNAL(clicked()), this, SLOT(pauseProcessing()));
@@ -241,7 +270,9 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 	ui_->label_ipAddress->setTextInteractionFlags(Qt::TextSelectableByMouse);
 	ui_->label_port->setTextInteractionFlags(Qt::TextSelectableByMouse);
 	setupTCPServer();
+*/
 
+/*
 	if(findObject_->objects().size())
 	{
 		// show objects already loaded in FindObject
@@ -272,19 +303,26 @@ MainWindow::MainWindow(FindObject * findObject, Camera * camera, QWidget * paren
 	//Setup drag and drop images
 	connect(ui_->imageDrop_objects, SIGNAL(imagesReceived(const QStringList &)), this, SLOT(addObjectsFromFiles(const QStringList &)));
 	connect(ui_->imageDrop_scene, SIGNAL(imagesReceived(const QStringList &)), this, SLOT(loadSceneFromFile(const QStringList &)));
+*/
 }
+
+
+
+
+
 
 MainWindow::~MainWindow()
 {
 	disconnect(camera_, SIGNAL(imageReceived(const cv::Mat &)), this, SLOT(update(const cv::Mat &)));
 	disconnect(camera_, SIGNAL(finished()), this, SLOT(stopProcessing()));
 	camera_->stop();
-	qDeleteAll(objWidgets_);
-	objWidgets_.clear();
+//	qDeleteAll(objWidgets_);
+//	objWidgets_.clear();
 	delete ui_;
-	delete findObject_;
+//	delete findObject_;
 }
 
+/*
 void MainWindow::closeEvent(QCloseEvent * event)
 {
 	bool quit = true;
@@ -295,7 +333,7 @@ void MainWindow::closeEvent(QCloseEvent * event)
 		switch(ret)
 		{
 		case QMessageBox::Yes:
-			quit = this->saveObjects();
+			//quit = this->saveObjects();
 			break;
 		case QMessageBox::Cancel:
 			quit = false;
@@ -315,7 +353,9 @@ void MainWindow::closeEvent(QCloseEvent * event)
 		event->ignore();
 	}
 }
+*/
 
+/*
 void MainWindow::setupTCPServer()
 {
 	if(tcpServer_)
@@ -333,12 +373,16 @@ void MainWindow::setupTCPServer()
 	connect(tcpServer_, SIGNAL(addObject(const cv::Mat &, int, const QString &)), this, SLOT(addObjectFromTcp(const cv::Mat &, int, const QString &)));
 	connect(tcpServer_, SIGNAL(removeObject(int)), this, SLOT(removeObject(int)));
 }
+*/
 
+/*
 void MainWindow::setSourceImageText(const QString & text)
 {
 	ui_->imageView_source->setTextLabel(text);
 }
+*/
 
+/*
 void MainWindow::loadSession()
 {
 	if(objWidgets_.size())
@@ -477,7 +521,9 @@ bool MainWindow::saveSettings(const QString & path) const
 	UERROR("Path \"%s\" not valid (should be *.ini)", path.toStdString().c_str());
 	return false;
 }
+*/
 
+/*
 int MainWindow::loadObjects(const QString & dirPath, bool recursive)
 {
 	QList<int> loadedObjects;
@@ -490,6 +536,7 @@ int MainWindow::loadObjects(const QString & dirPath, bool recursive)
 	{
 		QString currentDir = paths.front();
 		UDirectory dir(currentDir.toStdString(), formats.toStdString());
+
 		if(dir.isValid())
 		{
 			const std::list<std::string> & names = dir.getFileNames(); // sorted in natural order
@@ -725,7 +772,9 @@ void MainWindow::updateObjectSize(ObjWidget * obj)
 		}
 	}
 }
+*/
 
+/*
 void MainWindow::updateMirrorView()
 {
 	bool mirrorView = Settings::getGeneral_mirrorView();
@@ -735,12 +784,16 @@ void MainWindow::updateMirrorView()
 		iter.value()->setMirrorView(mirrorView);
 	}
 }
+*/
 
+/*
 void MainWindow::showHideControls()
 {
 	ui_->widget_controls->setVisible(Settings::getGeneral_controlsShown());
 }
+*/
 
+/*
 void MainWindow::showObjectsFeatures()
 {
 	for(QMap<int, ObjWidget*>::iterator iter=objWidgets_.begin(); iter!=objWidgets_.end(); ++iter)
@@ -748,7 +801,9 @@ void MainWindow::showObjectsFeatures()
 		iter.value()->setFeaturesShown(true);
 	}
 }
+*/
 
+/*
 void MainWindow::hideObjectsFeatures()
 {
 	for(QMap<int, ObjWidget*>::iterator iter=objWidgets_.begin(); iter!=objWidgets_.end(); ++iter)
@@ -756,7 +811,10 @@ void MainWindow::hideObjectsFeatures()
 		iter.value()->setFeaturesShown(false);
 	}
 }
+*/
 
+
+/*
 void MainWindow::addObjectFromScene()
 {
 	disconnect(camera_, SIGNAL(imageReceived(const cv::Mat &)), this, SLOT(update(const cv::Mat &)));
@@ -803,7 +861,10 @@ void MainWindow::addObjectFromScene()
 	}
 	delete dialog;
 }
+*/
 
+
+/*
 void MainWindow::addObjectsFromFiles(const QStringList & fileNames)
 {
 	if(fileNames.size())
@@ -872,7 +933,9 @@ void MainWindow::addObjectFromTcp(const cv::Mat & image, int id, const QString &
 		UERROR("Add Object: Error adding object %d.", id);
 	}
 }
+*/
 
+/*
 void MainWindow::loadSceneFromFile(const QStringList & fileNames)
 {
 	//take the first
@@ -900,7 +963,11 @@ void MainWindow::loadSceneFromFile()
 		}
 	}
 }
+*/
 
+
+
+/*
 void MainWindow::setupCameraFromVideoFile()
 {
 	if(!ui_->actionCamera_from_video_file->isChecked())
@@ -931,7 +998,9 @@ void MainWindow::setupCameraFromVideoFile()
 	ui_->actionCamera_from_directory_of_images->setChecked(false);
 	ui_->actionCamera_from_TCP_IP->setChecked(false);
 }
+*/
 
+/*
 void MainWindow::setupCameraFromImagesDirectory()
 {
 	if(!ui_->actionCamera_from_directory_of_images->isChecked())
@@ -962,7 +1031,9 @@ void MainWindow::setupCameraFromImagesDirectory()
 	ui_->actionCamera_from_video_file->setChecked(false);
 	ui_->actionCamera_from_TCP_IP->setChecked(false);
 }
+*/
 
+/*
 void MainWindow::setupCameraFromTcpIp()
 {
 	if(!ui_->actionCamera_from_TCP_IP->isChecked())
@@ -998,7 +1069,9 @@ void MainWindow::setupCameraFromTcpIp()
 	ui_->actionCamera_from_video_file->setChecked(false);
 	ui_->actionCamera_from_TCP_IP->setChecked(Settings::getCamera_6useTcpCamera());
 }
+*/
 
+/*
 void MainWindow::showObject(ObjWidget * obj)
 {
 	if(obj)
@@ -1124,19 +1197,27 @@ void MainWindow::updateVocabulary(const QList<int> & ids)
 	this->statusBar()->clearMessage();
 	ui_->dockWidget_objects->update();
 }
+*/
+
 
 void MainWindow::startProcessing()
 {
 	UINFO("Starting camera...");
+
+/*
 	bool updateStatusMessage = this->statusBar()->currentMessage().isEmpty();
 	if(updateStatusMessage)
 	{
 		this->statusBar()->showMessage(tr("Starting camera..."));
 	}
+*/
+
 	if(camera_->start())
 	{
 		connect(camera_, SIGNAL(imageReceived(const cv::Mat &)), this, SLOT(update(const cv::Mat &)), Qt::UniqueConnection);
 		connect(camera_, SIGNAL(finished()), this, SLOT(stopProcessing()), Qt::UniqueConnection);
+
+/*
 		ui_->actionStop_camera->setEnabled(true);
 		ui_->actionPause_camera->setEnabled(true);
 		ui_->actionStart_camera->setEnabled(false);
@@ -1169,7 +1250,11 @@ void MainWindow::startProcessing()
 		{
 			this->statusBar()->showMessage(tr("Camera started."), 2000);
 		}
+*/
+
 	}
+
+/*
 	else
 	{
 		if(updateStatusMessage)
@@ -1186,6 +1271,8 @@ void MainWindow::startProcessing()
 			QMessageBox::critical(this, tr("Camera error"), tr("Camera initialization failed! (with device %1)").arg(Settings::getCamera_1deviceId()));
 		}
 	}
+*/
+
 }
 
 void MainWindow::stopProcessing()
@@ -1196,6 +1283,8 @@ void MainWindow::stopProcessing()
 		disconnect(camera_, SIGNAL(finished()), this, SLOT(stopProcessing()));
 		camera_->stop();
 	}
+
+    /*
 	ui_->actionStop_camera->setEnabled(false);
 	ui_->actionPause_camera->setEnabled(false);
 	ui_->actionStart_camera->setEnabled(true);
@@ -1210,8 +1299,11 @@ void MainWindow::stopProcessing()
 	ui_->horizontalSlider_frames->setValue(0);
 	ui_->label_frame->setVisible(false);
 	ui_->label_port_image->setText("-");
+    */
 }
 
+
+/*
 void MainWindow::pauseProcessing()
 {
 	ui_->actionStop_camera->setEnabled(true);
@@ -1230,7 +1322,9 @@ void MainWindow::pauseProcessing()
 		camera_->start();
 	}
 }
+*/
 
+/*
 void MainWindow::moveCameraFrame(int frame)
 {
 	if(ui_->horizontalSlider_frames->isEnabled())
@@ -1242,7 +1336,9 @@ void MainWindow::moveCameraFrame(int frame)
 		}
 	}
 }
+*/
 
+/*
 void MainWindow::rectHovered(int objId)
 {
 	if(objId>=0 && Settings::getGeneral_autoScroll())
@@ -1254,6 +1350,7 @@ void MainWindow::rectHovered(int objId)
 		}
 	}
 }
+*/
 
 void MainWindow::update(const cv::Mat & image)
 {
@@ -1264,6 +1361,7 @@ void MainWindow::update(const cv::Mat & image)
 	}
 	sceneImage_ = image.clone();
 
+/*
 	// reset objects color
 	for(QMap<int, ObjWidget*>::iterator iter=objWidgets_.begin(); iter!=objWidgets_.end(); ++iter)
 	{
@@ -1273,10 +1371,24 @@ void MainWindow::update(const cv::Mat & image)
 			iter.value()->resetKptsWordID();
 		}
 	}
+*/
 
-	QTime guiRefreshTime;
+//	QTime guiRefreshTime;
 
-	DetectionInfo info;
+//	DetectionInfo info;
+    
+    ui_->imageView_source->updateImage(cvtCvMat2QImage(sceneImage_));
+
+/*
+    #include <QtCore/QMultiMap>
+    std::vector<cv::KeyPoint> sceneKeypoints_;
+    QMultiMap<int, int> sceneWords_;
+*/
+
+    //ui_->imageView_source->updateData(info.sceneKeypoints_, info.sceneWords_);
+//    ui_->imageView_source->updateData(sceneKeypoints_, sceneWords_);
+
+/*
 	if(findObject_->detect(sceneImage_, info))
 	{
 		guiRefreshTime.start();
@@ -1426,6 +1538,8 @@ void MainWindow::update(const cv::Mat & image)
 			}
 		}
 
+
+
 		// save screenshot of the detection
 		if(info.objDetected_.size() && !Settings::getGeneral_autoScreenshotPath().isEmpty())
 		{
@@ -1450,6 +1564,7 @@ void MainWindow::update(const cv::Mat & image)
 				}
 			}
 		}
+
 
 		//update likelihood plot
 		UDEBUG("Set likelihood score curve values (%d)", scores.size());
@@ -1532,8 +1647,10 @@ void MainWindow::update(const cv::Mat & image)
 		ui_->imageView_source->updateImage(cvtCvMat2QImage(sceneImage_));
 		ui_->imageView_source->updateData(info.sceneKeypoints_, info.sceneWords_);
 	}
+*/
 
 
+/*
 	//Update object pictures
 	for(QMap<int, ObjWidget*>::iterator iter=objWidgets_.begin(); iter!=objWidgets_.end(); ++iter)
 	{
@@ -1560,6 +1677,9 @@ void MainWindow::update(const cv::Mat & image)
 	{
 		lowestRefreshRate_ = refreshRate;
 	}
+*/
+
+/*
 	// Refresh the label only after each 1000 ms
 	if(refreshStartTime_.elapsed() > 1000)
 	{
@@ -1576,8 +1696,10 @@ void MainWindow::update(const cv::Mat & image)
 	}
 
 	ui_->label_timeRefreshGUI->setNum(guiRefreshTime.elapsed());
+*/
 }
 
+/*
 void MainWindow::notifyParametersChanged(const QStringList & paramChanged)
 {
 	//Selective update (to not update all objects for a simple camera's parameter modification)
@@ -1605,12 +1727,15 @@ void MainWindow::notifyParametersChanged(const QStringList & paramChanged)
 				nearestNeighborParamsChanged = true;
 			}
 
+
 			if(iter->compare(Settings::kGeneral_port()) == 0 &&
 			   Settings::getGeneral_port() != ui_->label_port->text().toInt() &&
 			   Settings::getGeneral_port() != 0)
 			{
 				setupTCPServer();
 			}
+
+
 		}
 	}
 
@@ -1659,5 +1784,7 @@ void MainWindow::notifyParametersChanged(const QStringList & paramChanged)
 		ULogger::setLevel(ULogger::kInfo);
 	}
 }
+*/
+
 
 } // namespace find_object
